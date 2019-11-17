@@ -3,14 +3,15 @@ const router = express.Router();
 
 function ioRouter(io) {
   io.on('connection', socket => {
-    console.log('io connected');
+    console.log(socket);
+    io.emit('userConnected');
 
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
 
     socket.on('newMessage', msg => {
-      console.log('message: ' + msg);
+      io.emit('messageAdded', msg);
     });
   });
 

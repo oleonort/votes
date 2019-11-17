@@ -13,6 +13,7 @@ const app = express();
 // Set public folder
 const clientPublicPath = path.join(__dirname, 'client/public');
 app.use(express.static(clientPublicPath));
+app.use('/src', express.static(path.join(__dirname, 'client/src')));
 
 // Body parser middleware
 app.use(bodyParser.json());

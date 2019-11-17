@@ -29,16 +29,7 @@
     <input id="m" autocomplete="off" /><button>Send</button>
 </form>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io();
-  document.querySelector('form').onsubmit = function(event) {
-    event.preventDefault();
-    var input = document.getElementById('m');
-    socket.emit('newMessage', input.value);
-    input.value = '';
-    return false;
-  };
-</script>
+<script type='text/javascript' src="/src/chat.js"></script>
 </body>
 
 </html>
