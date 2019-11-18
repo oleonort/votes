@@ -2,16 +2,24 @@ const express = require('express');
 const router = express.Router();
 
 function ioRouter(io) {
-  io.on('connection', socket => {
-    console.log(socket);
-    io.emit('userConnected');
+  const nsp = io.of('/chat');
+
+  nsp.on('connection', socket => {
+    socket.broadcast.emit('userConnected');
+    socket.emit('getUser');
+
+    socket.on('setUser', user => {
+      console.log(`{${user} : ${socket.id}}`);
+    });
+
+    socket.on('ping', arg => console.log(arg));
 
     socket.on('disconnect', () => {
-      console.log('user disconnected');
+      socket.broadcast.emit('userDisconnected');
     });
 
     socket.on('newMessage', msg => {
-      io.emit('messageAdded', msg);
+      socket.broadcast.emit('messageAdded', msg);
     });
   });
 
