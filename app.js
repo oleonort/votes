@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const socketio = require('socket.io');
 
+const indexRouter = require('./routes');
 const ioRouter = require('./routes/io');
 const chatRouter = require('./routes/chat');
 const votesRouter = require('./routes/votes');
@@ -11,9 +12,7 @@ const votesRouter = require('./routes/votes');
 const app = express();
 
 // Set public folder
-const clientPublicPath = path.join(__dirname, 'client/public');
-app.use(express.static(clientPublicPath));
-app.use('/src', express.static(path.join(__dirname, 'client/src')));
+app.use('/src', express.static(path.join(__dirname, 'public/src')));
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -32,8 +31,8 @@ const server  = app.listen(process.env.PORT || port, () => (
 // init socket io
 const io = socketio(server);
 
-app.set('clientPublicPath', clientPublicPath);
 // Using routes
+app.use('/', indexRouter);
 app.use('/io', ioRouter(io));
 app.use('/chat', chatRouter);
 app.use('/votes', votesRouter);
