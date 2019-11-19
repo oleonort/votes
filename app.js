@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Enable CORS
 app.use(cors());
 
-const port = 3000;
+const port = 5000;
 
 // Start server and save ref to const fot socket io
 const server  = app.listen(process.env.PORT || port, () => (
@@ -36,3 +36,7 @@ app.use('/', indexRouter);
 app.use('/io', ioRouter(io));
 app.use('/chat', chatRouter);
 app.use('/votes', votesRouter);
+
+app.get('/test', (req, res) => {
+  res.send("hello there");
+});
