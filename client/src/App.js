@@ -1,19 +1,19 @@
 import React from 'react';
-import axios from 'axios';
-import './app.css';
+import { BrowserRouter, Route } from 'react-router-dom';
+import styled from 'styled-components';
+import Header from './components/Header';
+import Chat from './components/Chat';
 
-const App = () => {
-  const fetchTest = () => {
-    axios.get('/test').then(res => console.log(res));
-  };
 
-  return (
-    <div className="app">
-      <header className="app-header">
-        <button onClick={fetchTest}>Fetch /test</button>
-      </header>
-    </div>
-  );
-};
+const App = () => (
+  <>
+    <BrowserRouter>
+      <Header />
+      <Route exact path="/chat">
+        <Chat />
+      </Route>
+    </BrowserRouter>
+  </>
+);
 
 export default App;
