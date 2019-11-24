@@ -4,15 +4,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const socketio = require('socket.io');
 
-const indexRouter = require('./routes');
 const ioRouter = require('./routes/io');
-const chatRouter = require('./routes/chat');
-const votesRouter = require('./routes/votes');
 
 const app = express();
-
-// Set public folder
-app.use('/src', express.static(path.join(__dirname, 'public/src')));
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -28,15 +22,24 @@ const server  = app.listen(process.env.PORT || port, () => (
   console.log(`Server started on port ${port}`
 )));
 
+if (process.env.NODE_ENV === 'production') {
+  // Express will serve up production assets
+  app.use(express.static('client/build'));
+
+  // Express will serve up the index.html file
+  // if it doesn't recognize the route (needed for client side routing)
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 // init socket io
 const io = socketio(server);
 
 // Using routes
-app.use('/', indexRouter);
 app.use('/io', ioRouter(io));
-app.use('/chat', chatRouter);
-app.use('/votes', votesRouter);
 
-app.get('/test', (req, res) => {
-  res.send("hello there");
-});
+// TODO: this is for test, remove once not needed
+// app.use('/api/test', (req, res) => {
+//   res.send('test');
+// });

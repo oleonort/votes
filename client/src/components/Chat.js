@@ -52,7 +52,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (socketInstance) return;
-    const socket = io('/chat');
+    const socket = io('/chatIo');
     setSocket(socket);
     const setMessage = msg => setMessages(prev => [...prev, msg]);
     socket.on('messageAdded', setMessage);
