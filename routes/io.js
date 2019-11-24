@@ -18,7 +18,6 @@ function ioRouter(io) {
 
     socket.on('newMessage', msg => {
       socket.broadcast.emit('messageAdded', msg);
-      console.log(msg);
     });
   });
 

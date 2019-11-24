@@ -35,7 +35,7 @@ const StyledList = styled.ul`
   margin: 0 auto;
   list-style-type: none;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 20px;
   max-width: 1280px;
   
   li {
