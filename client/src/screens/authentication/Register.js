@@ -1,16 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link, withRouter } from 'react-router-dom';
 
-const StyledRegister = styled.div`
+const StyledRegister = styled.form`
   .actions {
     margin: 20px 0 10px 0
   } 
 `;
 
-const Register = ({ history }) => (
-  <StyledRegister className="row">
+// TODO: post actual JSON not form data
+// TODO: add validation
+const Register = () => (
+  <StyledRegister className="row" action="/users/register" method="POST">
     <div className="col s12 m8 l4 offset-m2 offset-l4">
       <div className="card">
         <div className="card-action teal lighten-1 white-text">
@@ -19,23 +20,19 @@ const Register = ({ history }) => (
         <div className="card-content">
           <div className="input-field">
             <label htmlFor="name">Name</label>
-            <input type="text" id="name" />
-          </div>
-          <div className="input-field">
-            <label htmlFor="surname">Surname</label>
-            <input type="text" id="surname" />
+            <input type="text" id="name" name="name" />
           </div>
           <div className="input-field">
             <label htmlFor="username">Email</label>
-            <input type="email" id="email" />
+            <input type="email" id="email" name="email" />
           </div>
           <div className="input-field">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" />
+            <input type="password" id="password" name="password" />
           </div>
           <div className="input-field">
-            <label htmlFor="password">Confirm Password</label>
-            <input type="password" id="confirm-password" />
+            <label htmlFor="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirmPassword" />
           </div>
           <div className="actions">
             <button className="btn-large waves-effect waves-dark">Register and login</button>
@@ -49,9 +46,5 @@ const Register = ({ history }) => (
     </div>
   </StyledRegister>
 );
-
-Register.propTypes = {
-  history: PropTypes.any.isRequired
-};
 
 export default withRouter(Register);

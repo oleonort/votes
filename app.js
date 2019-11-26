@@ -3,8 +3,12 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const socketio = require('socket.io');
+const mongoose = require('mongoose');
+const db = require('./config/keys').MongoURI;
 
+// routers
 const ioRouter = require('./routes/io');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -38,8 +42,14 @@ const io = socketio(server);
 
 // Using routes
 app.use('/io', ioRouter(io));
+app.use('/users', usersRouter);
 
 // TODO: this is for test, remove once not needed
 // app.use('/api/test', (req, res) => {
 //   res.send('test');
 // });
+
+// Connect to Mongo
+mongoose.connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
+    .then(() => console.log('db connected'))
+    .catch(error => console.log(error));
