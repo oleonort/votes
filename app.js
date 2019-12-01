@@ -4,13 +4,20 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const socketio = require('socket.io');
 const mongoose = require('mongoose');
+const passport = require('passport');
 const db = require('./config/keys').MongoURI;
+const jwtStrategy = require('./config/passport');
+const cookieParser = require('cookie-parser');
 
 // routers
 const ioRouter = require('./routes/io');
 const usersRouter = require('./routes/users');
 
+
 const app = express();
+
+// using cookies parser
+app.use(cookieParser());
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -43,6 +50,15 @@ const io = socketio(server);
 // Using routes
 app.use('/io', ioRouter(io));
 app.use('/users', usersRouter);
+
+
+
+// config passport to use jwtStrategy
+jwtStrategy(passport);
+
+// init passport
+app.use(passport.initialize());
+
 
 // TODO: this is for test, remove once not needed
 // app.use('/api/test', (req, res) => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
 import uuidv1 from 'uuid/v1';
 import styled from 'styled-components';
 import io from 'socket.io-client';
@@ -47,6 +48,7 @@ const StyledList = styled.ul`
 const Chat = () => {
   const [socketInstance, setSocket] = useState(undefined);
   const [inputValue, setInputValue] = useState(undefined);
+  const [user, setUser] = useState({});
   const [messages, setMessages] = useState([]);
   const messagesRef = useRef(null);
 
@@ -60,6 +62,15 @@ const Chat = () => {
     socket.on('userDisconnected', () => setMessage('User left..'));
     socket.on('getUser', () => socket.emit('setUser', 'test'));
   }, [socketInstance]);
+
+  useEffect(() => {
+    if (Object.keys(user).length) return;
+
+    axios.get('/users/profile').then(({ data: user }) => {
+      setUser(user);
+    });
+
+  },[user]);
 
   useEffect(() => {
     window.scrollTo(0, document.body.scrollHeight);
@@ -77,7 +88,7 @@ const Chat = () => {
   return (
     <StyledChat>
       <StyledList ref={messagesRef} id="messages">
-        {messages.map(message => <li key={uuidv1()}>{message}</li>)}
+        {messages.map(message => <li key={uuidv1()}>{user.name}: {message}</li>)}
       </StyledList>
       <StyledForm onSubmit={addMessage}>
         <div className="controls">

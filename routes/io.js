@@ -9,7 +9,7 @@ function ioRouter(io) {
     socket.emit('getUser');
 
     socket.on('setUser', user => {
-      console.log(`{${user} : ${socket.id}}`);
+      // console.log(`{${user} : ${socket.id}}`);
     });
 
     socket.on('disconnect', () => {

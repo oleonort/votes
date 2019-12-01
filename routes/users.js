@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 // User model
 const User = require('../models/User');
@@ -60,8 +61,6 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
-    console.log(password);
-    console.log(email);
 
     User.findOne({ email })
         .then( user => {
@@ -69,8 +68,6 @@ router.post('/login', (req, res) => {
                 res.status(401)
                     .json({ error: 'Incorrect username or password' });
             } else {
-                console.log(password);
-                console.log(user.password);
                 bcrypt.compare(password, user.password, (err, isMatch) => {
                     if (err) {
                         res.status(500)
@@ -81,13 +78,18 @@ router.post('/login', (req, res) => {
                     } else {
                         // Issue token
                         const payload = { email };
-                        const token = jwt.sign(payload, secret, { expiresIn: '20min'});
-                        res.cookie('token', token, { httpOnly: true })
-                            .sendStatus(200);
+                        const user = jwt.sign(payload, secret, { expiresIn: '20min'});
+                        res.cookie('user', user)
+                            .redirect('/chat');
                     }
                 });
             }
         });
+});
+
+router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
+    console.log(req.user);
+    res.json(req.user);
 });
 
 module.exports = router;
