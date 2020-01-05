@@ -34,6 +34,12 @@ const LoginOrRegister = ({ history }) => (
         >
           Register
         </button>
+        <button
+            className="btn-large waves-effect waves-dark"
+            onClick={() => history.push('test')}
+        >
+          Test
+        </button>
       </div>
     </div>
   </StyledLoginOrRegister>
