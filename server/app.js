@@ -13,7 +13,6 @@ const cookieParser = require('cookie-parser');
 const ioRouter = require('./routes/io');
 const usersRouter = require('./routes/users');
 
-
 const app = express();
 
 // using cookies parser
@@ -51,14 +50,11 @@ const io = socketio(server);
 app.use('/io', ioRouter(io));
 app.use('/users', usersRouter);
 
-
-
 // config passport to use jwtStrategy
 jwtStrategy(passport);
 
 // init passport
 app.use(passport.initialize());
-
 
 // TODO: this is for test, remove once not needed
 // app.use('/api/test', (req, res) => {
